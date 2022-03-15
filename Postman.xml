@@ -1,0 +1,4 @@
+1. Khi tạo AIP cho 1 step mà báo lỗi 404: Not Found --> các nguyên nhân có thể là:
+- Flowcode chứa step trên chưa được đăng ký trong DB
+- kiểm tra URL đã đúng chưa? có thừa dấu cách hay không?
+-các param, headers truyền vào đã đúng chưa( nếu đặt biến thì pahir kiểm tra xem biến đó đã trùng với session hay step đang thực hiện hay không)
