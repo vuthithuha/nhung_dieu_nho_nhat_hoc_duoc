@@ -9,6 +9,6 @@ import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 public class UserInfos {
     private String userId;
     private String username;
-    private BookInfos[] books;
+    private BookInfos[] books;  // do Book là dạng dữ liệu kiểu mảng
 
 }
