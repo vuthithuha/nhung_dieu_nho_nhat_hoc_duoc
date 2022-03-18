@@ -11,23 +11,27 @@ public class Exercise04 {
     static String token;
 
     public static void main(String[] args) {
+        
+//Cách thức để nhập giá trị truyền vào từ bàn phím        
         System.out.print("Nhập môi trường test: ");
         Scanner n = new Scanner(System.in);
         String env = n.nextLine();
-        hostname = getEnvironmentTest(env);
-        RestResponse requestOTP = requestOTP("Device_0118000010", "+84118000010").send();
+        
+        hostname = getEnvironmentTest(env);      
+        
+        RestResponse requestOTP = requestOTP("Device_0118000010", "+84118000010").send();    // vì mỗi phương thức đều đang để kết quả trả về là request nên hải gửi request đi để lấy respond
         System.out.println("Request OTP:");
-        requestOTP.extract().body().prettyPrint();
+        requestOTP.extract().body().prettyPrint();      // in thông tin respond trả về
 
         System.out.println("Verify OTP: ");
         RestResponse verifyOTP = verifyOTP("Device_0118000010", "+84118000010", "123456", false).send();
-        int code = verifyOTP.extract().body().jsonPath().getInt("meta.code");
+        int code = verifyOTP.extract().body().jsonPath().getInt("meta.code");    // lấy ra 1 thông tin có kiểu 'int' trong respond trả về bằng jsonPath
 
         if (code != 200000) {
             if (code == 400030) {
 
                 System.out.println(">>>>>>>>>>>>>>>>>>> Wrong OTP");
-                System.exit(0);
+                System.exit(0);   // dừng hẳn chương trình
             }
             if (code == 400038) {
 
@@ -74,7 +78,9 @@ public class Exercise04 {
         System.out.println("-----------------------------***~The end~***---------------------------");
 
 // get list object
-        AddressInfo addressInfo = getProfile.extract().body().jsonPath().getObject("data.address[0]", AddressInfo.class); // đối với 1 array, luôn luôn phải có index đi kèm kể cả chỉ có 1 thành phần
+        AddressInfo addressInfo = getProfile.extract().body().jsonPath().getObject("data.address[0]", AddressInfo.class); 
+        // đối với 1 array, luôn luôn phải có index (chỉ số) đi kèm kể cả chỉ có 1 thành phần
+        
         System.out.println(addressInfo.getUser_address_id());
 
         Data data = getProfile.extract().body().jsonPath().getObject("data", Data.class);
