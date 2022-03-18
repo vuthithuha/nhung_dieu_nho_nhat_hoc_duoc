@@ -1,3 +1,5 @@
+// đây là class được tạo ra để ghi kết quả respond trả về dưới dạng 1 object
+
 package omc.training.api.exercise04;
 
 import lombok.Getter;
