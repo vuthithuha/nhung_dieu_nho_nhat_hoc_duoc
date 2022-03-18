@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//CÁCH 1: với cách này, khi vào hàm main sẽ cần khởi tạo từng biến và gán giá trị cho từng biến với hàm set
+//CÁCH 1: với cách này, khi vào hàm main sẽ cần gán giá trị cho từng biến với hàm ~~~~~~~~~~<tên class>.set<tên biến>
 //public class TitleInfos {
 //    private String titleVi;
 //    private String titleEn;
