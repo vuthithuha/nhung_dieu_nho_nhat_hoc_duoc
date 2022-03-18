@@ -1,0 +1,2 @@
+1. Hướng đối tượng.
+- Khi tạo một lớp cho 1 kiểu đối tượng: trong class đó, các biến thường được dùng "private" vì nó là những thông tin mà chỉ trong class đó có thể sử dụng, còn hàm sẽ để "public" vì các hàm đó sẽ được bên ngoài gọi đến để sử dụng
