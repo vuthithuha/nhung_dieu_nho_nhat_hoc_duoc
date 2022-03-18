@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-//CÁCH 1:
+//CÁCH 1: với cách này , khi chạy gọi đối tượng trong hàm main thì sẽ cần gán giá trị của từng biến với hàm ~~~~~~<tên class>.set<tên biến>~~~~~~
 //public class SubTitleInfos {
 //    private String subTitleVi;
 //    private String subTitleEn;
@@ -17,7 +17,7 @@ import lombok.Setter;
 
 
 
-//CÁCH 2:
+//CÁCH 2: với cách này, khi gọi trong hàm main thì chỉ cần truyền tham số vào trong 
 public class SubTitleInfos {
     private String subTitleVi;
     private String subTitleEn;
