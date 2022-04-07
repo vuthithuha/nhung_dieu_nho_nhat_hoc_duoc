@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Góc nhỏ của Hà</title>
+        <style>
+           
+       h1 { color : #f12713;
+         font-family: cursive;
+         font-size: 70px;
+         margin-top:150px;
+         margin-right:40px;
+         margin-bottom:60px;
+         margin-left:160px;}
+      
+            button {
+                width: 120px;
+                height: 65px;
+                color: #fff;
+                font-size: 20px;
+                background-color: #000;
+                border: none;
+                border-radius: 40px;
+                position: absolute;
+              
+                top: 320px;
+                left: 820px;
+            }
+
+            button.yes {
+                background-color: #f60;
+                left: 450px;
+            }
+        </style>
+        <script>
+            function getRectById(id) {
+                let element = document.getElementById(id);
+
+                let rect = {
+                    x: 0,
+                    y: 0,
+                    w: element.offsetWidth,
+                    h: element.offsetHeight
+                }
+
+                while (element) {
+                    if (element.tagName == "BODY") {
+                        const xScroll = element.scrollLeft || document.documentElement.scrollLeft;
+                        const yScroll = element.scrollTop || document.documentElement.scrollTop;
+
+                        rect.x += (element.offsetLeft - xScroll + element.clientLeft);
+                        rect.y += (element.offsetTop - yScroll + element.clientTop);
+                    } else {
+                        rect.x += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                        rect.y += (element.offsetTop - element.scrollTop + element.clientTop);
+                    }
+                
+                    element = element.offsetParent;
+                }
+                return rect;
+            }
+
+            function onload() {
+                document.getElementById("button").onmouseover = (event) => {
+                    if (sessionStorage.getItem("moving") === true)
+                        return;
+
+                    sessionStorage.setItem("moving", true);
+
+                    const mouseX = event.clientX;
+                    const mouseY = event.clientY;
+
+                    let rect = getRectById("button");
+
+                    let orientX = Math.abs(mouseX - rect.x) < Math.abs(mouseX - (rect.x + rect.w)) ? 1 : -1;
+                    let orientY = Math.abs(mouseY - rect.y) < Math.abs(mouseY - (rect.y + rect.h)) ? 1 : -1;
+
+                    count = 0;
+                    const interval = setInterval(() => {
+                        let rect = getRectById("button");
+                        let button = document.getElementById("button");
+
+                        button.style.top = rect.y + orientY * 10 + "px";
+                        button.style.left = rect.x + orientX * 10 + "px";
+
+                        count++;
+
+                        if (count >= 6) {
+                            clearInterval(interval);
+                            sessionStorage.setItem("moving", false);
+                        }
+                    }, 1000 / 60)
+                }
+            }
+        </script>
+    </head>
+    <body onload="onload()">
+        <h1>Cường thích làm hết việc nhà?</h1>
+        <button class="yes" onclick="alert('Oh Yeah! Cường muốn tự mình làm hết việc nhà!')">Có</button>
+        <button id="button" onclick="alert('Oh No! Cường chắc chắn chứ?')">Không</button>
+    </body>
+</html>

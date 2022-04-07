@@ -1,0 +1,24 @@
+package bai3;
+
+import java.util.Scanner;
+import java.util.Calendar;
+
+public class Main {
+    public static void main(String[] args) {
+        int n, i, j;
+        System.out.println("Đề bài: CHo 1 số nguyên n. Hãy kiểm tra xem, n có phải số nguyên tố hay không");
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập vào số nguyên n= ");
+        n = scanner.nextInt();
+        long begin = Calendar.getInstance().getTimeInMillis();
+        for (i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                System.out.println(n + " không phải là số nguyên tố");
+                System.exit(0);// dừng hẳn chương trình. muốn dừng đợi bấm 1 phím nào đấy thì dùng getch();
+            }
+        }
+        System.out.println(n + " là số nguyên tố");
+    }
+    long end = Calendar.getInstance().getTimeInMillis();
+}
+

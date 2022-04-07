@@ -1,0 +1,35 @@
+package bai3;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int i, n, j, b;
+        System.out.print("Đề bài: Thành phố X đang diễn ra một sự kiện lớn, ở đó có n người tham gia. " +
+                "Trong thời gian sự kiện, tất cả những người tham dự sẽ đi chào hỏi, làm quen với những người còn lại." +
+                " Người thứ i có mức độ vui vẻ là H[i] ( i: 1 -> n ). Nếu người thứ i mà bắt tay với người thứ j thì sẽ tạo ra độ vui vẻ là H[i] * H[j]." +
+                " Ban tổ chức muốn tính tổng độ vui vẻ khi tất cả mọi người đã bắt tay nhau.");
+        Scanner scanner = new Scanner(System.in);//khai báo đối tượng cho phép nhập dữ liệu từ bên ngoài
+        System.out.print("Số người trong sự kiện là n= ");
+        n = scanner.nextInt();
+        int[] a = new int[n];
+        System.out.println("Độ vui vẻ của từng người là: ");
+        for (i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
+        }
+        i=-1;
+        b=0;
+        while (i < (n - 1)) {
+            i++;
+            for (j = i+1; j < n; j++) {
+                b = b + a[i] * a[j];
+            }
+        }
+        System.out.print("Tổng độ vui vẻ khi tất cả mọi người bắt tay nhau là: "+ b);
+    }
+
+}
+
+
+

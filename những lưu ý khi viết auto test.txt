@@ -1,0 +1,221 @@
+TRONG JAVA:
+
+cần phân biệt hàm và câu lệnh. các câu lệnh có thẻ lồng nhau và hàm lồng hàm. 
++++++1. Khi viết 1 lớp để lưu đối tượng Json (ví dụ: nhận được respond của API Get Token và muốn đọc ra giá trị của Token để sửa sụng cho các API phía sau)
+
++ B1: Chuyển đối respond nhận được sang dạng String
+
+       var data = respond.extract().body().asPrettyString();
+       
++B2: Tạo ra 1 lớp để lưu đối tượng 
+
+     ===> Nếu Respond gồm các object: VD: 
+
+************* dữ liệu respond trả về 
+   "data": {
+        "status": "PROCESSING",
+        "steps": [
+            
+        ],
+        "flow_code_value": "OMREIA",
+        "session_id": "61a439ac-6c81-48cc-bba5-7e76f832f21b",
+        "customer_ref": "DO539891",
+        "wf_process_instance_id": "bce6aa61-9548-11ec-b94d-a68432173fc3"
+    },
+    "meta": {
+        "request_id": "2f2bea6c-714f-4948-bc4d-aab8c3703047",
+        "code": "success",
+        "message": "Success",
+        "service_id": "workflow-builder"
+    }
+************* 
+
+--> > > > > > Lớp hướng đối tượng được tạo:
+ 
+*************    
+@Getter
+@Setter
+public class Session {
+    private Data data;
+    private Meta meta;
+
+
+    @Getter
+    @Setter
+    public static class Data {
+        private String status;  // không sử dụng thì không cần điền
+        private List<Object> steps;  // không sử dụng thì không cần điền
+        private String flow_code_value; // không sử dụng thì không cần điền
+        private String session_id;
+        private String customer_ref;  // không sử dụng thì không cần điền
+        private String wf_process_instance_id;  // không sử dụng thì không cần điền
+    }
+
+    @Getter
+    @Setter
+    public static class Meta {   // không sử dụng thì không cần liệt kê, chỉ cần liệt kê theo level đến chỗ mk cần sử dụng. xem ví dụ API lấy current Step
+
+        private String request_id;
+        private String code;
+        private String message;
+        private String service_id;
+    }
+}
+************
+
+
+     ===> nếu respond trả về đối tượng lồng trong Array:
+
+
+*************
+
+ "data": {
+        "status": "PROCESSING",
+        "flow_code_value": "OMREIA",
+        "session_id": "3f3c87cb-e8eb-4d84-952a-790d876429e2",
+        "customer_ref": "DO539821",
+        "phone_number": null,
+        "wf_process_instance_id": "a1a16fdb-95df-11ec-916e-0a06128eac36",
+        "action": "NEXT_STEP",
+        "steps": [
+           ...
+        ],
+        "current_step": {
+            "step_id": "4281bfdf-59b5-4818-918e-c28bbaf79e06",
+            "code": "CAI",
+            "status": "PROCESSING",
+            "input": null,
+            "result": "",
+            "wf_process_instance_id": "33a9c9ba-95e4-11ec-b128-f66071c04a33",
+            "session_id": "3f3c87cb-e8eb-4d84-952a-790d876429e2",
+            "ref_id": null,
+            "updated_at": 1645756789446,
+            "created_at": 1645756789446,
+            "meta": "",
+            "error": null,
+            "wf_business_key": null
+        }
+
+*************
+--> > > > > > Lớp hướng đối tượng được tạo:
+
+**************
+@Getter
+@Setter
+public class IP {
+    private Data data;
+
+    @Getter
+    @Setter
+    public static class Data{
+        private CurrentStep current_step;
+        @Getter
+        @Setter
+        public static class CurrentStep{
+            private String code;
+        }
+    }
+
+}
+
+**************
+
+
+
++B3: Sử dụng thư viện Gson để chuyển JSON STRING thành JSON OBJECT
+
+   ~~~Session jsonSession = new Gson().fromJson(data, Session.class)~~~~~
+
+trong đó: Session: tên lớp chứa đối tượng JSON
+          jsonToken: tên đối tượng của lớp Session, lưu giá trị cụ thể của các biến trong lớp(theo kết quả respond thu được)
+          data: quy định
+          Session.class: lớp Session
+
++B4: lấy ra giá trị cần sử dụng trong đối tượng
+
+   ~~~~jsonSession.getData().getSession_id()~~~~~
+
+trong đó: jsonSession: đối tượng
+          getData: lớp Data
+          getSession_id: giá trị session_id bên trong data (vì data là 1 object
+
+ +++++2. Hàm trả về kết quả
+
+
+~~~~public static 'Loại dữ liệu trả về' 'tên hàm'('biến truyền vào nếu có')~~~~
+
+Với hàm trả về kết quả, luôn luôn:
+  - KHÔNG được dùng "void"
+  - Phải CÓ loại dữ liệu trả về trong câu lệnh khai báo hàm
+  - Phải CÓ lệnh return
+
+
+Ví dụ:
+
+***********
+ public static String newSession() {
+        RestMethod method = RestMethod.POST;
+
+        RestHeaders headers = new RestHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Channel-Code", "ONEHS-AGENT");
+        headers.add("X-Session-ID", token);
+        headers.add("Authorization", "Basic d29ya2Zsb3dfYnVpbGRlcjpET0AxMjM0");
+
+        String path = "/workflow-builder/public/v1/sessions";
+        RestRequest request = new RestRequest(mt, path, method);
+        request.setHeader(headers);
+
+        RestResponse response = request.send();
+        System.out.println("New Session");
+        var data = response.extract().body().asPrettyString();
+        Session jsonSession = new Gson().fromJson(data, Session.class);
+        System.out.println(data);
+
+        return jsonSession.getData().getSession_id();
+    }
+************
+
+--> mỗi lần gọi hàm là 1 lần hàm chạy. Vì vậy nếu muốn sử dụng kết quả trả về của hàm nhiều lần thì nên khai báo 1 biến  (mà tất cả các hàm cần sử dụng đều có thể truy cập) và gán giá trị của hàm đó
+ 
+
++++++3. Hàm không trả về kết quả
+
+
+~~~~public static void 'tên hàm'('biến truyền vào nếu có')~~~~
+Với hàm trả về kết quả, luôn luôn:
+  - DÙNG "void"
+  - KHÔNG có loại dữ liệu trả về trong câu lệnh khai báo hàm
+  - KHÔNG có lệnh return
+
+Có thể in ra kết quả <> trả về kết quả
+Khi dùng 1 hàm  và muốn sử dụng kết quả của hàm để truyền vào các hàm khác thfi cần sử dụng 'hàm trả về kết quả'
+
+
++++++4. Khi muốn sử dụng biến mà tất cả các hàm đều gọi được thì cần phải viết biến đó thuộc class chính chứ không phải viết trong 1 hàm main. nếu viết trong 1 hàm thì nó sẽ chỉ được sử dụng trong hàm đó.
+ -Biến được khai báo trong hàm sẽ chỉ được sử dụng cho các hàm bé hơn được lồng trong nó
+
+
++++++5. Các loại biến
+
+
++++++6. Hướng đối tượng
+
+
++++++7. Viết 1 API bằng code
+
++B1: Khai báo 1 đối tượng (vì nó có thể chứa nhiều giá trị): method, headers, body, request
+
++B2: gán giá trị cho đối tượng'
+
++B3: dùng hàm set để set các giá trị đã gán cho headers, body khi mà chúng có nhiều giá trị (vì nếu không dùng hàm set thì chúng chỉ là các giá trị rời rạc)
+
+     ~~~ request.setBody(body); ~~~~~~
+     ~~~ resquest.setHeaders(headers); ~~~~~
+
+->> nếu không dùng hàm set thì api được gửi đi, máy tính sẽ không hiểu được
+
++B4: gửi request:
+và khai báo biến respond
+
+respond thuộc lớp RestRespond nhưng nó nhận kết quả trả về của request nên:  RestRespond  respond = request.send()  -> gửi request đi

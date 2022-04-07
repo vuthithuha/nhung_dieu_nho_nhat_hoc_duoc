@@ -1,0 +1,38 @@
+package bai1;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int l, r, i, a, n, b;
+        System.out.println("Đề bài: Tìm trong một khoảng số nguyên dương cho trước số lượng số phong phú. Biết số phong phú là số mà tổng các ước thực (khác chính nó) lớn hơn nó");
+        Scanner scanner = new Scanner(System.in);//khai báo đối tượng cho phép nhập dữ liệu từ bên ngoài
+        System.out.print("Nhập vào l= ");
+        l = scanner.nextInt();// nhập số "l" vào từ bàn phím
+
+        System.out.print("Nhập vào r= ");
+        r = scanner.nextInt();
+        long start = System.currentTimeMillis(); // start lấy thời gian theo millisecond
+
+
+        b = 0;
+        for (i = l; i <= r; i++) {
+            a = 0;
+            for (n = 1; n < i; n++) {
+                if (i % n == 0) {
+                    a = a + n;
+                }
+            }
+            if (a > i) {
+                b++;
+                System.out.println(i);
+            }
+
+        }
+        System.out.println("Kết quả là " + b);
+        long end = System.currentTimeMillis();
+        System.out.println("Thời gian chạy chương trình là: "+ (end- start));
+    }
+
+}
