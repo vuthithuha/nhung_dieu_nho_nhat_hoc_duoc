@@ -2,14 +2,103 @@ I. 7 nguyên lý trong testing
 1- Test có thể chỉ ra lỗi, nhưng không thể chứng minh phần mềm không có lỗi
 2- Không thể test tất cả các trường hợp
 3- join vào test càng sớm càng tốt
-4-
+4- quy tắc 80/20: 80% lỗi nằm trong 20% chức năng chính
+5- thuốc trừ sâu: "nhờn thuốc" khi chỉ chạy đi chạy lại 1 bộ lịch bản test --> không phát hiện ra được các defect mới --> cần thay đổi kịch bản đi: add thêm testcase mới
+6-Test được thực hiện khác nhau trong bối cảnh khác nhau
+7- phần mềm của bạn đáp ứng được đúng các nhu cầu được chỉ định và sửa được tất cả các lỗi nhưng khi bàn giao cho khác hàng mà không đáp ứng đúng nhu cầu và mong đợi của khách hàng hoặc kếm hơn so với các hệ thống cạnh tranh khác thì phần mềm đó cũng không có ý nghĩa gì cả
 
 
-II. Test level
+II. Test process
+theo thứ tự
+1. Test planning
+-->Lập kế hoạch: defind tát cả các objective, nguồn lực,...
+2. Test monitoring and control
+-->kiểm tra xem có j chệch hướng, hay có gì cần điều chỉnh test planning hay không: về nguồn lực, tài liệu,...
+3. Test analysis
+-->đọc toàn bộ tài liệu --> đánh giá xem tài liệu có rõ ràng, dễ hiểu hay không, có consitent(phù hợp) giữa function này với function kia hay không--> Hight level test case
+4. Test design
+-->Bóc tách các condition để viết --> Tạo test case
+5. Test implementation (triển khai)
+--> chuẩn bị datatest, enviroment( version, môi trường, thiết bị,...) đúng theo yêu cầu hay không, hệ thống quản lý cấu hình, hệ thống quản lý defect, hệ thống log bug
+6. Test execute
+-->Base trên tài liệu test case đã viết. Compare kết quả thực tế với expected results, và phân nó là lỗi hay không --> log bug --> dev trace bug để fix kịp thời
+- report các lỗi này để đưa cho các stakeholder để quyết định mức độ lỗi ntn, ảnh hưởng ntn đến hệ thống--> quyết định có deliver sản phẩm hay không
+7. Test completion
+- Tạo test summary report gửi cho stakeholder
+- xem xem các tets case,các tài liệu... có handover cho đội maintain hay không?
+- join cùng team để phân tích xem trong quá trình làm việc có gặp vấn đề j hay không --> cải tiến quy trình test, nâng cao chất lượng
 
+III. Test level
+- test level là 1 nhóm các test activities được nhóm và tổ chức lại với nhau
+1. Component testing
+- Tìm lỗi ở mỗi module
+-Test độc lập từng feature
 
+-> Test basis: (tài liệu)
+- requirement của từng feature
+- code
+- detail design
 
+->Test type:
+  + function
+  + non-function
+  + structure
 
+2. Intergation testing
+- Tìm lỗi ở mối quan hệ giữa 2 hay 1 nhóm module, verify function/ non-function behavior có đáp ứng yêu cầu không
+--> 2 types: 
+  + Component intergation
+  + System intergation
+
+-> Test basis: (tài liệu)
+- workflow
+- Usecase
+- interface (giao diện)
+
+->Test type:
+  + function
+  + performance
+  
+  
+  --> 1 số loại test intergation
+  + big-bang: tích hợp các component vào 1 step (chỉ tích hợp 1 lần)
+  + stubs: được sử dụng khi mà model level thấp hơn chưa sẵn sàng để test --> cần giả lập model thấp hơn đó để có thể tets được model cao hơn
+  + driver: khi mà model level cao hơn còn missing
+  
+3. System testing
+- Test end to end, validate xem hệ thống đã đáp ứng đủ các yêu cầu khách hàng mong muốn hay chưa
+- Verify function và non-function
+
+-> Test basis: (tài liệu)
+- Tài liệu đặc tả chi tiết về function
+- epic, user story
+- use case
+- Baaos các phân tích rủi ro
+- model of system
+- thiết kế phần mềm và hệ thống
+
+->Test type:
+  + function
+  + non-function
+  + reliable (độ tin cậy)
+  + usability
+4. Acceptance testing
+- Build confidence của hệ thống
+- verify function/ non-function behavior có đáp ứng yêu cầu không
+- Tập trung chủ yếu vào behavior và khả năng của hệ thống
+-- có sẵn sàng cho release sản phẩm hay không
+
+-> Test basis: (tài liệu)
+- Tài liệu đặc tả người dùng
+- System reuirement -
+- Risk report
+- Business process
+
+->Test type:
+  + alpha, beta test
+  + UAT
+  +  Test chấp nhận vận hành
+  +có tuân theo đúng hợp đồng hay không, có đáp ứng standart hay không
 III.Các mô hình
 1- Mô hình Waterfall
 - Tại giai đoạn cuối cùng mới có sự tham gia của test
