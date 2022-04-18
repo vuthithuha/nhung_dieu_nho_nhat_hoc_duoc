@@ -1,0 +1,48 @@
+I. 7 nguyên lý trong testing
+1- Test có thể chỉ ra lỗi, nhưng không thể chứng minh phần mềm không có lỗi
+2- Không thể test tất cả các trường hợp
+3- join vào test càng sớm càng tốt
+4-
+
+
+II. Test level
+
+
+
+
+III.Các mô hình
+1- Mô hình Waterfall
+- Tại giai đoạn cuối cùng mới có sự tham gia của test
+
+2- Mô hình V-model
+
+
+
+
+IV. 1 số khái niệm
+- User story
+- Functional testing: test các chức năng của hệ thống
+- Nonfunctional testing: test behavior của khách hàng: security, performance,...
+
+V. Ký thuật thiết kế test case
+1. Phân vùng tương đương
+- Từ requirement: Phân tích bóc tách thành các condition
+- Chia các vùng giá trị dựa vào giá trị đầu vào, kết quả đầu ra thành các vùng mà kết quả mong đợi tương đương nhau --> chúng sẽ được xử lý tương đương nhau (tất cả các phần tử trong cùng 1 khoảng giá trị đều có behavior hoàn toàn giống nhau tức là được hệ thống xử lý 1 cách giống nhau)
+
+--> Khi designe test case: 1 giá trị trong 1 vùng = 1 test case
+--> từ các vùng valid đến các vùng invalid
+
+
+2. Phân tích giá trị biên
+- được apply tại các dự án có sử dụng kỹ thuật phân vùng tương đương
+- 2 giá trị tại biên: biến lớn nhất và biên nhỏ nhất
+
+~~~ Ví dụ: 0< x < 101 . tức là 1<= x <= 100 . Khi đó 2 giá trị tại biên là 1 và 100.
+    test case 1: 1  ---> biên dưới
+    test case 2: 1-1= 0  --->biên dưới -1
+    test case 3: 100   ---> biên trên
+    test case 4: 100+1= 101  --->biên trên + 1
+    
+
+
+
